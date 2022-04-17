@@ -8,10 +8,9 @@
  */
 export default {
   dev: {
-    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-    '/api/': {
+    '/contacts/': {
       // 要代理的地址
-      target: 'https://preview.pro.ant.design',
+      target: 'http://192.168.3.9:3000/',
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
@@ -19,7 +18,7 @@ export default {
   },
   test: {
     '/api/': {
-      target: 'https://proapi.azurewebsites.net',
+      target: 'http://localhost:3000/contacts/list',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

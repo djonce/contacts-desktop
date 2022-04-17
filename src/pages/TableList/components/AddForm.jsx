@@ -1,8 +1,6 @@
 import { useIntl } from 'umi';
 import { ModalForm } from '@ant-design/pro-form';
-
 import { createForm } from '@formily/core';
-
 import { FormProvider, FormConsumer, Field } from '@formily/react';
 import { FormItem, FormLayout, Input, FormButtonGroup, Submit } from '@formily/antd';
 
@@ -11,7 +9,7 @@ const form = createForm();
 function AddForm(props) {
   const intl = useIntl();
 
-  const { createModalVisible, handleModalVisible } = props;
+  const { visible, onVisibleChange } = props;
   return (
     <div>
       <ModalForm
@@ -20,8 +18,8 @@ function AddForm(props) {
           defaultMessage: 'New rule',
         })}
         width="600px"
-        visible={createModalVisible}
-        onVisibleChange={handleModalVisible}
+        visible={visible}
+        onVisibleChange={onVisibleChange}
         onFinish={async (value) => {
           //   const success = await handleAdd(value as API.RuleListItem);
           //   if (success) {
