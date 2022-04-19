@@ -18,8 +18,11 @@ import AddForm from './components/AddForm';
  * @param fields
  */
 const handleAdd = async (fields: API.RuleListItem) => {
+  console.log('----add ---');
+
   const hide = message.loading('正在添加');
   try {
+    console.log('handle add', fields);
     await addRule({ ...fields });
     hide();
     message.success('Added successfully');
@@ -41,9 +44,9 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('Configuring');
   try {
     await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+      // name: fields.name,
+      // desc: fields.desc,
+      // key: fields.key,
     });
     hide();
 
@@ -62,13 +65,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (item: API.RuleListItem) => {
   const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
+  if (!item) return true;
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
+    const { user_id } = item;
+    await removeRule({ user_id });
     hide();
     message.success('Deleted successfully and will refresh soon');
     return true;
@@ -131,11 +133,7 @@ const TableList: React.FC = () => {
       dataIndex: 'email',
       sorter: true,
       hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
+      renderText: (val: string) => `${val}`,
       search: false,
     },
     {
@@ -158,7 +156,12 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
         </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
+        <a
+          key="subscribeAlert"
+          onClick={() => {
+            handleRemove(record);
+          }}
+        >
           <FormattedMessage
             id="pages.searchTable.subscribeAlert"
             defaultMessage="Subscribe to alerts"
@@ -213,7 +216,6 @@ const TableList: React.FC = () => {
                   defaultMessage="Total number of service calls"
                 />{' '}
                 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
               </span>
             </div>
           }
@@ -240,7 +242,11 @@ const TableList: React.FC = () => {
       )}
 
       {/* 添加用户 */}
-      <AddForm visible={createModalVisible} onVisibleChange={handleModalVisible} />
+      <AddForm
+        visible={createModalVisible}
+        onVisibleChange={handleModalVisible}
+        handleAdd={handleAdd}
+      />
 
       <UpdateForm
         onSubmit={async (value) => {

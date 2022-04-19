@@ -24,24 +24,36 @@ export async function rule(
 
 /** 新建规则 PUT /api/rule */
 export async function updateRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/contacts/rule', {
-    method: 'PUT',
+  return request<API.RuleListItem>('/contacts/update', {
+    method: 'POST',
     ...(options || {}),
   });
 }
 
 /** 新建规则 POST /api/rule */
 export async function addRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/contacts/rule', {
+  console.log('adRule', options);
+  return request<API.RuleListItem>('/contacts/add', {
     method: 'POST',
-    ...(options || {}),
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      ...options,
+    },
   });
 }
 
 /** 删除规则 DELETE /api/rule */
-export async function removeRule(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/rule', {
+export async function removeRule(
+  params: {
+    user_id: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/contacts/del', {
     method: 'DELETE',
+    params: {
+      ...params,
+    },
     ...(options || {}),
   });
 }
