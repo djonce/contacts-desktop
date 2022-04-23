@@ -11,6 +11,7 @@ import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/api';
 import AddForm from './components/AddForm';
+import styles from './index.less';
 
 /**
  * @en-US Add node
@@ -81,7 +82,7 @@ const handleRemove = async (item: API.RuleListItem) => {
   }
 };
 
-const TableList: React.FC = () => {
+const Contacts: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -296,4 +297,4 @@ const TableList: React.FC = () => {
   );
 };
 
-export default TableList;
+export default Contacts;

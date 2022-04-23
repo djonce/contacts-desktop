@@ -3,7 +3,7 @@
     name: 'list.table-list',
     icon: 'user',
     path: '/list',
-    component: './TableList',
+    component: './Contacts',
   },
   {
     path: '/',
