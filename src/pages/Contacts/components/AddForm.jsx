@@ -16,9 +16,9 @@ function AddForm(props) {
     const success = await handleAdd(value);
     if (success) {
       onVisibleChange(false);
-      // if (actionRef.current) {
-      //   actionRef.current.reload();
-      // }
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
     }
   };
   return (

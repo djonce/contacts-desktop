@@ -13,13 +13,10 @@ import { rule, addRule, updateRule, removeRule } from '@/services/api';
 import AddForm from './components/AddForm';
 
 /**
- * @en-US Add node
- * @zh-CN 添加节点
+ * @zh-CN 添加联系人
  * @param fields
  */
 const handleAdd = async (fields: API.RuleListItem) => {
-  console.log('----add ---');
-
   const hide = message.loading('正在添加');
   try {
     console.log('handle add', fields);
@@ -81,7 +78,7 @@ const handleRemove = async (item: API.RuleListItem) => {
   }
 };
 
-const TableList: React.FC = () => {
+const Contacts: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -296,4 +293,4 @@ const TableList: React.FC = () => {
   );
 };
 
-export default TableList;
+export default Contacts;
