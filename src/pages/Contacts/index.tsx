@@ -11,16 +11,12 @@ import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/api';
 import AddForm from './components/AddForm';
-import styles from './index.less';
 
 /**
- * @en-US Add node
- * @zh-CN 添加节点
+ * @zh-CN 添加联系人
  * @param fields
  */
 const handleAdd = async (fields: API.RuleListItem) => {
-  console.log('----add ---');
-
   const hide = message.loading('正在添加');
   try {
     console.log('handle add', fields);
