@@ -1,16 +1,16 @@
+import { addRule, removeRule, rule, updateRule } from '@/services/api';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Drawer } from 'antd';
-import React, { useState, useRef } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import { Button, Drawer, message } from 'antd';
+import React, { useRef, useState } from 'react';
+import { FormattedMessage, useIntl } from 'umi';
+import AddForm from './components/AddForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
-import { rule, addRule, updateRule, removeRule } from '@/services/api';
-import AddForm from './components/AddForm';
 
 /**
  * @zh-CN 添加联系人
@@ -38,20 +38,19 @@ const handleAdd = async (fields: API.RuleListItem) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('Configuring');
+  const hide = message.loading('updating');
   try {
     await updateRule({
-      // name: fields.name,
-      // desc: fields.desc,
-      // key: fields.key,
+      name: fields.name,
+      email: fields.email,
     });
     hide();
 
-    message.success('Configuration is successful');
+    message.success('Update is successful');
     return true;
   } catch (error) {
     hide();
-    message.error('Configuration failed, please try again!');
+    message.error('Update failed, please try again!');
     return false;
   }
 };
@@ -263,6 +262,7 @@ const Contacts: React.FC = () => {
           }
         }}
         updateModalVisible={updateModalVisible}
+        // onVisibleChange={handleUpdateModalVisible(false)}
         values={currentRow || {}}
       />
 
