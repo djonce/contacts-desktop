@@ -1,7 +1,7 @@
+import Footer from '@/components/Footer';
+import RightContent from '@/components/RightContent';
 import { PageLoading } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

@@ -1,7 +1,6 @@
 import { Avatar, List } from 'antd';
-
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 import styles from './NoticeList.less';
 
 export type NoticeIconTabProps = {
@@ -19,6 +18,7 @@ export type NoticeIconTabProps = {
   list: API.NoticeIconItem[];
   onViewMore?: (e: any) => void;
 };
+
 const NoticeList: React.FC<NoticeIconTabProps> = ({
   list = [],
   onClick,

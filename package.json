@@ -32,7 +32,9 @@
     "test": "umi test",
     "test:component": "umi test ./src/components",
     "test:e2e": "node ./tests/run-tests.js",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "conf": "umi webpack",
+    "g": "umi g page Hello --typescript"
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
