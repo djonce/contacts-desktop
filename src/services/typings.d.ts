@@ -35,11 +35,9 @@ declare namespace API {
   };
 
   type RuleListItem = {
-    user_id?: number;
-    disabled?: boolean;
-    href?: string;
-    avatar?: string;
-    name?: string;
+    id?: string;
+    username?: string;
+    sex?: string;
     phone?: string;
     email?: string;
     address?: string;

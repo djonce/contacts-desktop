@@ -1,14 +1,12 @@
 import { addRule, removeRule, rule, updateRule } from '@/services/api';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
+import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Drawer, message } from 'antd';
+import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
-import AddForm from './components/AddForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 
@@ -41,12 +39,17 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('updating');
   try {
     await updateRule({
-      name: fields.name,
+      id: fields.id,
+      username: fields.username,
       email: fields.email,
+      sex: fields.sex,
+      phone: fields.phone,
+      address: fields.address,
     });
+
     hide();
 
-    message.success('Update is successful');
+    message.success('update is successful');
     return true;
   } catch (error) {
     hide();
@@ -89,8 +92,6 @@ const Contacts: React.FC = () => {
    * */
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
 
-  const [showDetail, setShowDetail] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
@@ -103,21 +104,28 @@ const Contacts: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: '姓名',
-      dataIndex: 'name',
-      // tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
+      title: '序号',
+      dataIndex: 'id',
+      hideInForm: true,
+      search: false,
+      render: (dom) => {
+        return <span>{dom}</span>;
       },
+    },
+    {
+      title: '姓名',
+      dataIndex: 'username',
+      // tip: 'The rule name is the unique key',
+      render: (dom) => {
+        return <span>{dom}</span>;
+      },
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      hideInForm: true,
+      renderText: (val: number) => `${val === 1 ? '男' : '女'}`,
+      search: false,
     },
     {
       title: '手机号',
@@ -238,11 +246,49 @@ const Contacts: React.FC = () => {
       )}
 
       {/* 添加用户 */}
-      <AddForm
+
+      <ModalForm
+        title="新建联系人"
+        width="400px"
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
-        handleAdd={handleAdd}
-      />
+        onFinish={async (value) => {
+          console.log('--', value);
+          const success = await handleAdd(value as RuleListItem);
+          if (success) {
+            handleModalVisible(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+      >
+        <ProFormText
+          placeholder={'姓名'}
+          rules={[
+            {
+              required: true,
+              message: '姓名为必填项',
+            },
+          ]}
+          width="md"
+          name="username"
+        />
+        <ProFormText placeholder={'性别'} width="md" name="sex" />
+        <ProFormText
+          placeholder={'手机号'}
+          rules={[
+            {
+              required: true,
+              message: '手机号为必填项',
+            },
+          ]}
+          width="md"
+          name="phone"
+        />
+        <ProFormText placeholder={'邮箱'} width="md" name="email" />
+        <ProFormTextArea placeholder={'地址'} width="md" name="address" />
+      </ModalForm>
 
       <UpdateForm
         onSubmit={async (value) => {
@@ -257,38 +303,10 @@ const Contacts: React.FC = () => {
         }}
         onCancel={() => {
           handleUpdateModalVisible(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
         }}
         updateModalVisible={updateModalVisible}
-        // onVisibleChange={handleUpdateModalVisible(false)}
         values={currentRow || {}}
       />
-
-      <Drawer
-        width={600}
-        visible={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-        closable={false}
-      >
-        {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
-            column={2}
-            title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };

@@ -26,7 +26,10 @@ export async function rule(
 export async function updateRule(options?: { [key: string]: any }) {
   return request<API.RuleListItem>('/contacts/update', {
     method: 'POST',
-    ...(options || {}),
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      ...options,
+    },
   });
 }
 
