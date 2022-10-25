@@ -1,6 +1,6 @@
 import { addRule, removeRule, rule, updateRule } from '@/services/api';
 import { PlusOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -95,7 +95,7 @@ const Contacts: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
-
+  const restFormRef = useRef<ProFormInstance>();
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -252,10 +252,12 @@ const Contacts: React.FC = () => {
         width="400px"
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
+        formRef={restFormRef}
         onFinish={async (value) => {
           console.log('--', value);
           const success = await handleAdd(value as RuleListItem);
           if (success) {
+            restFormRef.current?.resetFields();
             handleModalVisible(false);
             if (actionRef.current) {
               actionRef.current.reload();
