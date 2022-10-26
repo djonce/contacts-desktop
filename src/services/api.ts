@@ -46,17 +46,24 @@ export async function addRule(options?: { [key: string]: any }) {
 }
 
 /** 删除规则 DELETE /api/rule */
-export async function removeRule(
-  params: {
-    user_id: string;
-  },
-  options?: { [key: string]: any },
-) {
-  return request<Record<string, any>>('/contacts/del', {
-    method: 'DELETE',
-    params: {
-      ...params,
+export async function removeRule(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/contacts/delete', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      ...options,
     },
-    ...(options || {}),
+  });
+}
+
+/** 新建规则 POST /api/rule */
+export async function login(options?: { [key: string]: any }) {
+  console.log('login', options);
+  return request<API.LoginResult>('/users/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      ...options,
+    },
   });
 }

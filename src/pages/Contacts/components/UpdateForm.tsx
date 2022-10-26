@@ -44,8 +44,6 @@ const UpdateForm: React.FC<UpdateFormProps> = (props: UpdateFormProps) => {
         return true;
       }}
     >
-      {/* <ProFormDependency name={['_id']} ignoreFormListField /> */}
-
       <ProFormText
         placeholder={'姓名'}
         rules={[

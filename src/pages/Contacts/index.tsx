@@ -1,10 +1,10 @@
 import { addRule, removeRule, rule, updateRule } from '@/services/api';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, message } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
 import type { FormValueType } from './components/UpdateForm';
@@ -68,8 +68,8 @@ const handleRemove = async (item: API.RuleListItem) => {
   const hide = message.loading('正在删除');
   if (!item) return true;
   try {
-    const { user_id } = item;
-    await removeRule({ user_id });
+    const { id } = item;
+    await removeRule({ id });
     hide();
     message.success('Deleted successfully and will refresh soon');
     return true;
@@ -160,17 +160,25 @@ const Contacts: React.FC = () => {
         >
           <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
         </a>,
-        <a
+        <Popconfirm
           key="subscribeAlert"
-          onClick={() => {
+          title="Are you sure?"
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={() => {
+            console.log(record);
             handleRemove(record);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
           }}
         >
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
+          <a key="del" onClick={() => {}}>
+            <FormattedMessage
+              id="pages.searchTable.subscribeAlert"
+              defaultMessage="Subscribe to alerts"
+            />
+          </a>
+        </Popconfirm>,
       ],
     },
   ];

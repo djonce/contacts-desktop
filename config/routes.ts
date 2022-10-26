@@ -1,5 +1,10 @@
 ﻿export default [
   {
+    path: '/login',
+    layout: false,
+    component: './Login',
+  },
+  {
     name: 'list.table-list',
     icon: 'user',
     path: '/list',
@@ -7,8 +12,12 @@
   },
   {
     path: '/',
-    redirect: '/list',
+    redirect: '/login',
   },
+  // {
+  //   path: '/',
+  //   redirect: '/list',
+  // },
   {
     component: './404',
   },

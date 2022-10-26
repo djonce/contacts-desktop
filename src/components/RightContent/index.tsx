@@ -1,7 +1,7 @@
-import { Space } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space } from 'antd';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
+import { SelectLang, useModel } from 'umi';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 
@@ -41,9 +41,6 @@ const GlobalHeaderRight: React.FC = () => {
             value: 'Pro Layout',
           },
         ]}
-        // onSearch={value => {
-        //   console.log('input', value);
-        // }}
       />
       <span
         className={styles.action}
